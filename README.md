@@ -1,6 +1,8 @@
 jsonlog
 =====
 
+![Build Status](https://github.com/tsloughter/jsonlog/workflows/Common%20Test/badge.svg)
+
 Formatter for the [Erlang/OTP logger]() that outputs json.
 
 ## Usage
