@@ -3,7 +3,9 @@ jsonlog
 
 ![Build Status](https://github.com/tsloughter/jsonlog/workflows/Common%20Test/badge.svg)
 
-Formatter for the [Erlang/OTP logger]() that outputs json.
+Formatter for the [Erlang/OTP logger](https://erlang.org/doc/apps/kernel/logger_chapter.html) that outputs json.
+
+Based on [flatlog](https://github.com/ferd/flatlog/)
 
 ## Usage
 
@@ -13,8 +15,7 @@ Formatter for the [Erlang/OTP logger]() that outputs json.
     {logger, [
         {handler, default, logger_std_h,
          #{formatter => {jsonlog, #{
-            json_encode => fun jsonlog_jsone_encoder:encode/2,
-            term_depth => 50
+            json_encode => fun jsonlog_jsone_encoder:encode/2
           }}}
         }
     ]},
