@@ -14,14 +14,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        otp_version: ['23.0.2', '22.3.4.2', '21.3.8.16']
+        otp_version: ['23.1']
         os: [ubuntu-latest]
     env:
       OTP_VERSION: ${{ matrix.otp_version }}
     steps:
     - uses: actions/checkout@v2
-    - name: Run Collector
-      run: docker-compose up -d
+
     - uses: bajankristof/setup-erlang@master
       with:
         otp-version: ${{ matrix.otp_version }}
