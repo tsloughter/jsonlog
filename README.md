@@ -65,25 +65,30 @@ logger:info(#{a => <<"hello">>}).
 
 ## Use from Elixir
 
-Unknown. I tried adding this:
+Configure your application with a logger config like the one for Erlang. Based
+on [Elixir Logger docs for using Erlang/OTP handlers](https://hexdocs.pm/logger/Logger.html#module-erlang-otp-handlers):
 
 ``` elixir
 import Config
 
-config :kernel,
-  logger: [
-        {:handler, :default, :logger_std_h,
-         %{formatter: {:jsonlog, %{
-            json_encode: &:jsonlog_jsone_encoder.encode/2
-          }}}
-        }
-    ],
-  logger_level: :info
+config :logger,
+  backends: []
+  
+config :your_app, :logger, [
+  {:handler, :default, :logger_std_h,
+   %{formatter: {:jsonlog, %{json_encode: &:jsonlog_jsone_encoder.encode/2}}}}]
 ```
 
-to a `config/releases.exs` but running only the startup OTP logs are being
-logged as json, logs after boot are using the default Elixir logs
-configuration.
+Then you have to manually call `:logger.add_handlers` in your Application code
+when it starts up.
+
+``` elixir
+$ iex -S mix
+> :logger.add_handlers(:your_app)
+:ok
+> :logger.info(%{a: "b"})
+{"body": {"a":"b"},"level":"info","pid":"<0.174.0>","time":"2020-10-15T22:52:29.598551+00:00"}
+```
 
 ## Todo
 

@@ -71,7 +71,7 @@ apply_defaults(Map) ->
                      {pid, pid},
                      {in, mfa},
                      {line, line},
-                     msg]},
+                     {body, msg}]},
       Map).
 
 format_msg(Data, Config) ->
