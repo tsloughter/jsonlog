@@ -1,6 +1,6 @@
 {application, jsonlog,
- [{description, "An OTP library"},
-  {vsn, "0.1.0"},
+ [{description, "A custom formatter for the logger application that turns maps into json logs"},
+  {vsn, "git"},
   {registered, []},
   {applications,
    [kernel,
@@ -10,5 +10,5 @@
   {modules, []},
 
   {licenses, ["Apache 2.0"]},
-  {links, []}
+  {links, [{"Github", "https://github.com/tsloughter/jsonlog/"}]}
  ]}.
