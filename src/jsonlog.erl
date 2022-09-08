@@ -60,7 +60,11 @@ format_log([TemplateKey | Rest], Config, Msg, Meta, Acc) ->
             format_log(Rest, Config, Msg, Meta, Acc#{TemplateKey => format_val(TemplateKey, Val, Config)})
     end.
 
-%%
+%%====================================================================
+%% Internal functions
+%%====================================================================
+format_log_internal(Tpl, Config, Msg, Meta) ->
+    format_log(Tpl, Config, Msg, Meta, #{}).
 
 apply_defaults(Map) ->
     maps:merge(
@@ -84,6 +88,11 @@ format_val(time, Time, Config) ->
     format_time(Time, Config);
 format_val(mfa, MFA, Config) ->
     format_mfa(MFA, Config);
+% Format recursively for nested objects.
+format_val(_Key, Val, Config) when is_map(Val) ->
+    Keys = maps:keys(Val),
+    TemplateKeys = lists:zip(Keys, Keys),
+    format_log_internal(TemplateKeys, Config, Val, Val);
 format_val(_Key, Val, _Config) ->
     jsonlog_utils:to_string(Val).
 

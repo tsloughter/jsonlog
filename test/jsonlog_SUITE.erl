@@ -51,6 +51,29 @@ format(Config) ->
                                   json_encode => Encoder}),
     ?assertEqual(#{<<"body">> => <<"{foo}">>, <<"c">> => <<"d">>}, decode(Formatted4)),
 
+    Map2 = #{e => #{f => g}},
+
+    Formatted5 = jsonlog:format(#{level => info, msg => {report, Map2}, meta => #{c => d}},
+                                #{template => [{my_value, msg}],
+                                  json_encode => Encoder}),
+    ?assertEqual(#{<<"my_value">> => #{<<"e">> => #{<<"f">> => <<"g">>}}}, decode(Formatted5)),
+
+    Map3 = #{e => #{f => #{g => h}}, i => #{j => k}},
+
+    Formatted6 = jsonlog:format(#{level => info, msg => {report, Map3}, meta => #{c => Map3}},
+                                #{template => [c],
+                                  json_encode => Encoder}),
+    ?assertEqual(#{<<"c">> => #{<<"e">> => #{<<"f">> => #{<<"g">> => <<"h">>}}, <<"i">> => #{<<"j">> => <<"k">>}}}, decode(Formatted6)),
+
+    Formatted7 = jsonlog:format(#{level => info, msg => {report, Map3}, meta => #{c => Map3}},
+                                #{template => [{c, c}, {msg, msg}],
+                                  json_encode => Encoder}),
+    ?assertEqual(
+        #{
+            <<"msg">> => #{<<"e">> => #{<<"f">> => #{<<"g">> => <<"h">>}}, <<"i">> => #{<<"j">> => <<"k">>}},
+            <<"c">> => #{<<"e">> => #{<<"f">> => #{<<"g">> => <<"h">>}}, <<"i">> => #{<<"j">> => <<"k">>}}
+        }, decode(Formatted7)),
+
     ok.
 
 %%
